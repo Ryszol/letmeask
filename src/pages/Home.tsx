@@ -1,6 +1,5 @@
+import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-
-import { firebase, auth } from '../services/firebase'
 
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg'
@@ -10,18 +9,18 @@ import '../styles/auth.scss'
 
 import { Button } from '../components/Button'
 
+import { AuthContext } from '../App'
+
 export function Home() {
   const history = useHistory()
+  const { user, signInWithGoogle } = useContext(AuthContext)
 
-  function handleCreateRoom() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+  async function handleCreateRoom() {
+    if (!user) {
+      await signInWithGoogle()
+    }
 
-    auth.signInWithPopup(provider).then(result => {
-      console.log(result)
-
-      history.push('/rooms/new')
-    })
-
+    history.push('/rooms/new')
   }
 
   return (
@@ -34,6 +33,7 @@ export function Home() {
       <main>
         <div className="main-content">
           <img src={logoImg} alt="Letmeask" />
+          <h1>{user?.name}</h1>
           <button className="create-room" onClick={handleCreateRoom}>
             <img src={googleIconImg} alt="Logo do Google" />
             Crie sua sala com o Google
@@ -51,5 +51,3 @@ export function Home() {
     </div>
   )
 }
-
-// minuto 13:00 - continuar
