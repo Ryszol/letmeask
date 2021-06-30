@@ -13,6 +13,20 @@
       > img {
         max-height: 45px;
       }
+
+      > div {
+        display: flex;
+        gap: 8px;
+
+        button {
+          height: 40px;
+          font-size: 14px;
+
+          &.outlined {
+            padding: 0 24px;
+          }
+        }
+      }
     }
   }
 
